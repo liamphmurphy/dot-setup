@@ -24,8 +24,9 @@ set ttyfast                 " Speed up scrolling in Vim
 " set noswapfile            " disable creating swap file
 " set backupdir=~/.cache/vim " Directory to store backup files.
 
-
 " plugins
+
+let mapleader = ";"
 
 call plug#begin()
     Plug 'vim-airline/vim-airline'
@@ -38,6 +39,8 @@ call plug#begin()
 
     Plug 'hrsh7th/cmp-vsnip'
     Plug 'hrsh7th/vim-vsnip'
+    Plug 'rcarriga/nvim-dap-ui'
+    Plug 'ray-x/guihua.lua', {'do': 'cd lua/fzy && make' }
 
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
@@ -49,7 +52,20 @@ call plug#begin()
     Plug 'rbgrouleff/bclose.vim'
     Plug 'kyazdani42/nvim-web-devicons' " for file icons
     Plug 'kyazdani42/nvim-tree.lua'
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    Plug 'preservim/nerdtree'
+    Plug 'ryanoasis/vim-devicons'
+
+    Plug 'nvim-lua/plenary.nvim'
+    Plug 'nvim-telescope/telescope.nvim'
+
+    Plug 'dracula/vim', { 'as': 'dracula' }
+
+    Plug 'christoomey/vim-tmux-navigator'    
+    Plug 'tpope/vim-fugitive'
 call plug#end()
+
+colorscheme dracula
 
 lua << EOF
 require'lspconfig'.gopls.setup{}
@@ -64,7 +80,18 @@ lua <<EOF
 EOF
 
 
+" Telescope remappings
+nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
+nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
+nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
+nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
+
 set completeopt=menu,menuone,noselect
+
+" NERDTree remappings
+nnoremap <leader>n :NERDTreeFocus<CR>
+nnoremap <leader>nf :NERDTreeFind<CR>
+
 
 lua <<EOF
   -- Setup nvim-cmp.
@@ -125,3 +152,4 @@ lua <<EOF
     capabilities = capabilities
   }
 EOF
+
