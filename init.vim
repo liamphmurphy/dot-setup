@@ -63,6 +63,10 @@ call plug#begin()
 
     Plug 'christoomey/vim-tmux-navigator'    
     Plug 'tpope/vim-fugitive'
+
+    " Python
+    Plug 'neovim/pynvim'
+    Plug 'LunarVim/LunarVim'
 call plug#end()
 
 colorscheme dracula
@@ -75,8 +79,11 @@ EOF
 " Go Lua and fancy things
 autocmd BufWritePre *.go :silent! lua require('go.format').gofmt()
 autocmd BufWritePre (InsertLeave?) <buffer> lua vim.lsp.buf.formatting_sync(nil,500)
+
+" Setup LSP servers
 lua <<EOF
     require('go').setup()
+    require'lspconfig'.pyright.setup{}
 EOF
 
 
@@ -153,3 +160,7 @@ lua <<EOF
   }
 EOF
 
+
+" Autostart NerdTREE
+autocmd VimEnter * NERDTree
+autocmd VimEnter * wincmd p
