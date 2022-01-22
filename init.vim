@@ -45,7 +45,7 @@ call plug#begin()
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
     " Go specific
-    Plug 'ray-x/go.nvim'
+    "Plug 'ray-x/go.nvim'
     Plug 'mfussenegger/nvim-dap'
 
     Plug 'francoiscabrol/ranger.vim'
@@ -54,8 +54,7 @@ call plug#begin()
     Plug 'kyazdani42/nvim-tree.lua'
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'preservim/nerdtree'
-    Plug 'ryanoasis/vim-devicons'
-
+    
     Plug 'nvim-lua/plenary.nvim'
     Plug 'nvim-telescope/telescope.nvim'
 
@@ -64,9 +63,14 @@ call plug#begin()
     Plug 'christoomey/vim-tmux-navigator'    
     Plug 'tpope/vim-fugitive'
 
+    Plug 'fannheyward/telescope-coc.nvim'
+    Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+    
+    Plug 'ryanoasis/vim-devicons'
+
     " Python
-    Plug 'neovim/pynvim'
-    Plug 'LunarVim/LunarVim'
+    "Plug 'neovim/pynvim'
+   " Plug 'LunarVim/LunarVim'
 call plug#end()
 
 colorscheme dracula
@@ -77,13 +81,17 @@ require'nvim-tree'.setup()
 EOF
 
 " Go Lua and fancy things
-autocmd BufWritePre *.go :silent! lua require('go.format').gofmt()
 autocmd BufWritePre (InsertLeave?) <buffer> lua vim.lsp.buf.formatting_sync(nil,500)
+autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.organizeImport')
+
+" vim-go remappings
+au FileType go nmap <leader>ce <Plug>(go-def)
+au FileType go nmap <leader>co <Plug>(go-doc)
 
 " Setup LSP servers
 lua <<EOF
-    require('go').setup()
     require'lspconfig'.pyright.setup{}
+
 EOF
 
 
@@ -98,6 +106,8 @@ set completeopt=menu,menuone,noselect
 " NERDTree remappings
 nnoremap <leader>n :NERDTreeFocus<CR>
 nnoremap <leader>nf :NERDTreeFind<CR>
+
+set guifont=DroidSansMono\ Nerd\ Font\ 11
 
 
 lua <<EOF
