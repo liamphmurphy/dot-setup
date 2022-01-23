@@ -16,8 +16,7 @@ set wildmode=longest,list   " get bash-like tab completions
 filetype plugin indent on   "allow auto-indenting depending on file type
 syntax on                   " syntax highlighting
 set mouse=a                 " enable mouse click
-set clipboard=unnamedplus   " using system clipboard
-filetype plugin on
+set clipboard=unnamedplus   " using system clipboard filetype plugin on
 set cursorline              " highlight current cursorline
 set ttyfast                 " Speed up scrolling in Vim
 " set spell                 " enable spell check (may need to download language package)
@@ -27,6 +26,8 @@ set ttyfast                 " Speed up scrolling in Vim
 " plugins
 
 let mapleader = ";"
+
+filetype plugin on
 
 call plug#begin()
     Plug 'vim-airline/vim-airline'
@@ -67,7 +68,8 @@ call plug#begin()
     Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
     
     Plug 'ryanoasis/vim-devicons'
-
+    
+    Plug 'preservim/nerdcommenter'
     " Python
     "Plug 'neovim/pynvim'
    " Plug 'LunarVim/LunarVim'
@@ -78,15 +80,13 @@ colorscheme dracula
 lua << EOF
 require'lspconfig'.gopls.setup{}
 require'nvim-tree'.setup()
+
+require('telescope').load_extension('fzy_native')
 EOF
 
 " Go Lua and fancy things
 autocmd BufWritePre (InsertLeave?) <buffer> lua vim.lsp.buf.formatting_sync(nil,500)
 autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.organizeImport')
-
-" vim-go remappings
-au FileType go nmap <leader>ce <Plug>(go-def)
-au FileType go nmap <leader>co <Plug>(go-doc)
 
 " Setup LSP servers
 lua <<EOF
@@ -106,9 +106,6 @@ set completeopt=menu,menuone,noselect
 " NERDTree remappings
 nnoremap <leader>n :NERDTreeFocus<CR>
 nnoremap <leader>nf :NERDTreeFind<CR>
-
-set guifont=DroidSansMono\ Nerd\ Font\ 11
-
 
 lua <<EOF
   -- Setup nvim-cmp.
@@ -174,3 +171,8 @@ EOF
 " Autostart NerdTREE
 autocmd VimEnter * NERDTree
 autocmd VimEnter * wincmd p
+" vim-go remappings
+au FileType go nmap <leader>ce <Plug>(go-def)
+au FileType go nmap <leader>co <Plug>(go-doc)
+au FileType go nmap <leader>cI <Plug>(go-implements)
+
