@@ -20,7 +20,7 @@ set clipboard=unnamedplus   " using system clipboard filetype plugin on
 set cursorline              " highlight current cursorline
 set ttyfast                 " Speed up scrolling in Vim
 " set spell                 " enable spell check (may need to download language package)
-" set noswapfile            " disable creating swap file
+set noswapfile            " disable creating swap file
 " set backupdir=~/.cache/vim " Directory to store backup files.
 
 " plugins
@@ -53,7 +53,7 @@ call plug#begin()
     Plug 'rbgrouleff/bclose.vim'
     Plug 'kyazdani42/nvim-web-devicons' " for file icons
     Plug 'kyazdani42/nvim-tree.lua'
-    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"    Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'preservim/nerdtree'
     
     Plug 'nvim-lua/plenary.nvim'
@@ -70,6 +70,7 @@ call plug#begin()
     Plug 'ryanoasis/vim-devicons'
     
     Plug 'preservim/nerdcommenter'
+    Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
     " Python
     "Plug 'neovim/pynvim'
    " Plug 'LunarVim/LunarVim'
@@ -81,17 +82,18 @@ lua << EOF
 require'lspconfig'.gopls.setup{}
 require'nvim-tree'.setup()
 
-require('telescope').load_extension('fzy_native')
+require('config')
+require('telescope').load_extension('fzf')
 EOF
 
 " Go Lua and fancy things
 autocmd BufWritePre (InsertLeave?) <buffer> lua vim.lsp.buf.formatting_sync(nil,500)
-autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.organizeImport')
+" autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.organizeImport')
 
 " Setup LSP servers
 lua <<EOF
     require'lspconfig'.pyright.setup{}
-
+    
 EOF
 
 
@@ -159,20 +161,9 @@ lua <<EOF
     })
   })
 
-  -- Setup lspconfig.
-  local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-  -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-  require('lspconfig')['gopls'].setup {
-    capabilities = capabilities
-  }
 EOF
 
-
 " Autostart NerdTREE
-autocmd VimEnter * NERDTree
-autocmd VimEnter * wincmd p
-" vim-go remappings
-au FileType go nmap <leader>ce <Plug>(go-def)
-au FileType go nmap <leader>co <Plug>(go-doc)
-au FileType go nmap <leader>cI <Plug>(go-implements)
+"autocmd VimEnter * NERDTree
+"autocmd VimEnter * wincmd p
 
