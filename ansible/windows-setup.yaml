@@ -1,0 +1,22 @@
+---
+- hosts: all
+  tasks:
+    - name: Install chocolatey packages
+      win_chocolatey:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - vscode
+        - vmware-workstation-player
+        - steam-client
+        - firefox
+        - discord
+        - slack
+        - 7zip
+    
+    - name: Install non-choco packages
+      win_package:
+        path: "{{ item }}"
+        state: present
+      with_items:
+        - https://www.startallback.com/download.php

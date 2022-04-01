@@ -1,0 +1,59 @@
+---
+- hosts: all
+  vars:
+    home: "'{{ lookup('env', 'HOME') }}'"
+    github_root: "git@github.com/liamphmurphy"
+    repo_dest: '{{ home }}/repos'
+    nvim_config: '{{ home }}/.config/nvim'
+
+  tasks:
+    - name: Install libraries
+      ansible.builtin.package:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - go
+        - python3
+        - docker
+        - docker-compose
+        - git
+        - code
+        - tmux
+        - neovim
+        - kubectl
+        - i3-gaps
+
+    - name: Clone repos
+      git: 
+        repo: '{{ github_root }}'/'{{ item }}'.git 
+        dest: '{{ home }}'/'{{ item }}'
+      with_items:
+        - dot-setup
+        - PleasantBot
+
+    - name: Symlink dotfiles
+      file: path={{ home }}/.{{ item }} src={{ repo_dest }}/dot-setup/{{ item }}
+      state: link
+      with_items:
+        - .zshrc
+        - .tmux.conf
+
+    - name: Symlink neovim configs
+      file: path={{ nvim_config }}/{{ item }} src={{ repo_dest }}/dot-setup/{{ item }}
+      state: link
+      with_items:
+        - init.vim
+        - lua
+
+    - name: Enable docker
+      service:
+        name: docker
+        state: started
+      become: yes
+
+    - name: Add my user to docker group
+      command: sudo usermod -a -G docker '{{ home }}'
+      become: yes
+    
+    - name: Install act
+      ansible.builtin.command: go install github.com/nektos/act@latest
