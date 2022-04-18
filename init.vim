@@ -78,14 +78,6 @@ call plug#end()
 
 colorscheme dracula
 
-lua << EOF
-require'lspconfig'.gopls.setup{}
-require'nvim-tree'.setup()
-
-require('config')
-require('telescope').load_extension('fzf')
-EOF
-
 " Go Lua and fancy things
 autocmd BufWritePre (InsertLeave?) <buffer> lua vim.lsp.buf.formatting_sync(nil,500)
 " autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.organizeImport')
@@ -102,12 +94,21 @@ nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
 nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
 nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
 nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
+nnoremap <leader>fc <cmd>lua require('telescope.builtin').git_commits()<cr>
 
 set completeopt=menu,menuone,noselect
 
 " NERDTree remappings
 nnoremap <leader>n :NERDTreeFocus<CR>
 nnoremap <leader>nf :NERDTreeFind<CR>
+
+lua << EOF
+require'lspconfig'.gopls.setup{}
+require'nvim-tree'.setup()
+
+require('config')
+require('telescope').load_extension('fzf')
+EOF
 
 lua <<EOF
   -- Setup nvim-cmp.
@@ -162,8 +163,4 @@ lua <<EOF
   })
 
 EOF
-
-" Autostart NerdTREE
-"autocmd VimEnter * NERDTree
-"autocmd VimEnter * wincmd p
 
