@@ -10,6 +10,11 @@ require('lspconfig')['gopls'].setup {
         vim.keymap.set("n", "dl", "<cmd>Telescope diagnostics<cr>", {buffer=0})
         vim.keymap.set("n", "go", "<cmd>GoDoc<cr>", {buffer=0})
         vim.keymap.set("n", "ge", "<cmd>GoIfErr<cr>", {buffer=0})
+        vim.keymap.set("n", "ds", "<cmd>GoDebugStart<cr>", {buffer=0})
+        vim.keymap.set("n", "dt", "<cmd>GoDebugStop<cr>", {buffer=0})
+        vim.keymap.set("n", "db", "<cmd>GoDebugBreakpoint<cr>", {buffer=0})
+        vim.keymap.set("n", "dc", "<cmd>GoDebugContinue<cr>", {buffer=0})
     end,
     capabilities = capabilities
 }
+

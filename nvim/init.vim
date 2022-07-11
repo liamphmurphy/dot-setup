@@ -30,6 +30,7 @@ let mapleader = ";"
 filetype plugin on
 
 call plug#begin()
+    Plug 'voldikss/vim-floaterm'
     Plug 'vim-airline/vim-airline'
     Plug 'neovim/nvim-lspconfig'
     Plug 'hrsh7th/cmp-nvim-lsp'
@@ -70,7 +71,7 @@ call plug#begin()
     Plug 'ryanoasis/vim-devicons'
     
     Plug 'preservim/nerdcommenter'
-    Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+    Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
     " Python
     "Plug 'neovim/pynvim'
    " Plug 'LunarVim/LunarVim'
@@ -102,8 +103,11 @@ set completeopt=menu,menuone,noselect
 nnoremap <leader>n :NERDTreeFocus<CR>
 nnoremap <leader>nf :NERDTreeFind<CR>
 
+" Floatererm remappings
+nnoremap <silent> <Leader>t   :FloatermToggle cd %:p:h<CR>
+tnoremap <silent> <Leader>t   <C-\><C-n>:FloatermToggle<CR>
+
 lua << EOF
-require'lspconfig'.gopls.setup{}
 require'nvim-tree'.setup()
 
 require('config')
