@@ -34,6 +34,9 @@ alias t="tmux"
 # kubectl
 alias kc="kubectl"
 
+# minikube
+alias mk="minikube"
+
 # git
 alias gfgp="git fetch && git pull origin ${vcs_info_msg_0_}"
 
